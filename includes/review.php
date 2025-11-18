@@ -1,7 +1,5 @@
 <?php
-/**
- * Classe para gerenciar avaliações de produtos
- */
+
 class Review {
     private $conn;
     private $table = "reviews";
@@ -18,9 +16,6 @@ class Review {
         $this->conn = $db;
     }
 
-    /**
-     * Criar nova avaliação
-     */
     public function create() {
         $query = "INSERT INTO " . $this->table . " (product_id, user_id, user_name, rating, comment, created_at)
                   VALUES (:product_id, :user_id, :user_name, :rating, :comment, NOW())";
@@ -36,9 +31,6 @@ class Review {
         return $stmt->execute();
     }
 
-    /**
-     * Buscar todas as avaliações de um produto
-     */
     public function getByProductId($productId) {
         $query = "SELECT * FROM " . $this->table . " 
                   WHERE product_id = :product_id 
@@ -51,9 +43,6 @@ class Review {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Calcular média de avaliações de um produto
-     */
     public function getAverageRating($productId) {
         $query = "SELECT AVG(rating) as average, COUNT(*) as total 
                   FROM " . $this->table . " 
@@ -71,9 +60,7 @@ class Review {
         ];
     }
 
-    /**
-     * Verificar se usuário já avaliou o produto
-     */
+
     public function hasUserReviewed($productId, $userId) {
         $query = "SELECT COUNT(*) as count FROM " . $this->table . " 
                   WHERE product_id = :product_id AND user_id = :user_id";
